@@ -421,6 +421,9 @@ bool Game::Initialize() {
 	chkQuickAnimation = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_QUICK_ANIMATION, dataManager.GetSysString(1299));
 	chkQuickAnimation->setChecked(gameConf.quick_animation != 0);
 	posY += 30;
+	chkAskMSet = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_ASK_MSET, dataManager.GetSysString(1268));
+	chkAskMSet->setChecked(gameConf.ask_mset != 0);
+	posY += 30;
 	chkAutoSaveReplay = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, -1, dataManager.GetSysString(1366));
 	chkAutoSaveReplay->setChecked(gameConf.auto_save_replay != 0);
 	elmTabHelperLast = chkRegex;
@@ -1295,6 +1298,7 @@ void Game::LoadConfig() {
 	gameConf.quick_animation = 0;
 	gameConf.auto_save_replay = 0;
 	gameConf.enable_sound = true;
+	gameConf.ask_mset = 0;
 	gameConf.sound_volume = 0.5;
 	gameConf.enable_music = true;
 	gameConf.music_volume = 0.5;
@@ -1381,6 +1385,8 @@ void Game::LoadConfig() {
 				gameConf.quick_animation = atoi(valbuf);
 			} else if(!strcmp(strbuf, "auto_save_replay")) {
 				gameConf.auto_save_replay = atoi(valbuf);
+		} else if(!strcmp(strbuf, "ask_mset")) {
+			gameConf.ask_mset = atoi(valbuf);
 		} else if(!strcmp(strbuf, "enable_sound")) {
 			gameConf.enable_sound = atoi(valbuf) > 0;
 		} else if(!strcmp(strbuf, "sound_volume")) {
@@ -1474,6 +1480,7 @@ void Game::SaveConfig() {
 	fprintf(fp, "quick_animation = %d\n", gameConf.quick_animation);
 	fprintf(fp, "auto_save_replay = %d\n", (chkAutoSaveReplay->isChecked() ? 1 : 0));
 	fprintf(fp, "random_drawing = %d\n", gameConf.random);
+	fprintf(fp, "ask_mset = %d\n", gameConf.ask_mset);
 	fprintf(fp, "enable_sound = %d\n", (chkEnableSound->isChecked() ? 1 : 0));
 	fprintf(fp, "enable_music = %d\n", (chkEnableMusic->isChecked() ? 1 : 0));
 	fprintf(fp, "enable_pendulum_scale = %d\n", ((mainGame->chkEnablePScale->isChecked()) ? 1 : 0));
