@@ -89,7 +89,7 @@ void SingleDuel::JoinGame(DuelPlayer* dp, void* pdata, bool is_creater) {
 		dp->type = NETPLAYER_TYPE_OBSERVER;
 		sctc.type |= NETPLAYER_TYPE_OBSERVER;
 		STOC_HS_WatchChange scwc;
-		scwc.watch_count = observers.size();
+		scwc.watch_count = (unsigned short)observers.size();
 		if(players[0])
 			NetServer::SendPacketToPlayer(players[0], STOC_HS_WATCH_CHANGE, scwc);
 		if(players[1])
@@ -123,7 +123,7 @@ void SingleDuel::JoinGame(DuelPlayer* dp, void* pdata, bool is_creater) {
 	}
 	if(observers.size()) {
 		STOC_HS_WatchChange scwc;
-		scwc.watch_count = observers.size();
+		scwc.watch_count = (unsigned short)observers.size();
 		NetServer::SendPacketToPlayer(dp, STOC_HS_WATCH_CHANGE, scwc);
 	}
 }
@@ -135,7 +135,7 @@ void SingleDuel::LeaveGame(DuelPlayer* dp) {
 		observers.erase(dp);
 		if(duel_stage == DUEL_STAGE_BEGIN) {
 			STOC_HS_WatchChange scwc;
-			scwc.watch_count = observers.size();
+			scwc.watch_count = (unsigned short)observers.size();
 			if(players[0])
 				NetServer::SendPacketToPlayer(players[0], STOC_HS_WATCH_CHANGE, scwc);
 			if(players[1])
@@ -201,7 +201,7 @@ void SingleDuel::ToDuelist(DuelPlayer* dp) {
 		scpe.pos = 1;
 	}
 	STOC_HS_WatchChange scwc;
-	scwc.watch_count = observers.size();
+	scwc.watch_count = (unsigned short)observers.size();
 	NetServer::SendPacketToPlayer(players[0], STOC_HS_PLAYER_ENTER, scpe);
 	NetServer::SendPacketToPlayer(players[0], STOC_HS_WATCH_CHANGE, scwc);
 	if(players[1]) {
@@ -246,9 +246,7 @@ void SingleDuel::PlayerReady(DuelPlayer* dp, bool is_ready) {
 			if(deck_error[dp->type]) {
 				deckerror = (DECKERROR_UNKNOWNCARD << 28) + deck_error[dp->type];
 			} else {
-				bool allow_ocg = host_info.rule == 0 || host_info.rule == 2;
-				bool allow_tcg = host_info.rule == 1 || host_info.rule == 2;
-				deckerror = deckManager.CheckDeck(pdeck[dp->type], host_info.lflist, allow_ocg, allow_tcg);
+				deckerror = deckManager.CheckDeck(pdeck[dp->type], host_info.lflist, host_info.rule);
 			}
 		}
 		if(deckerror) {
@@ -326,12 +324,12 @@ void SingleDuel::StartDuel(DuelPlayer* dp) {
 	}
 	unsigned char deckbuff[12];
 	auto pbuf = deckbuff;
-	BufferIO::WriteInt16(pbuf, pdeck[0].main.size());
-	BufferIO::WriteInt16(pbuf, pdeck[0].extra.size());
-	BufferIO::WriteInt16(pbuf, pdeck[0].side.size());
-	BufferIO::WriteInt16(pbuf, pdeck[1].main.size());
-	BufferIO::WriteInt16(pbuf, pdeck[1].extra.size());
-	BufferIO::WriteInt16(pbuf, pdeck[1].side.size());
+	BufferIO::WriteInt16(pbuf, (short)pdeck[0].main.size());
+	BufferIO::WriteInt16(pbuf, (short)pdeck[0].extra.size());
+	BufferIO::WriteInt16(pbuf, (short)pdeck[0].side.size());
+	BufferIO::WriteInt16(pbuf, (short)pdeck[1].main.size());
+	BufferIO::WriteInt16(pbuf, (short)pdeck[1].extra.size());
+	BufferIO::WriteInt16(pbuf, (short)pdeck[1].side.size());
 	NetServer::SendBufferToPlayer(players[0], STOC_DECK_COUNT, deckbuff, 12);
 	char tempbuff[6];
 	memcpy(tempbuff, deckbuff, 6);
@@ -904,7 +902,7 @@ int SingleDuel::Analyze(unsigned char* msgbuffer, unsigned int len) {
 			break;
 		}
 		case MSG_SHUFFLE_SET_CARD: {
-			int loc = BufferIO::ReadInt8(pbuf);
+			unsigned int loc = BufferIO::ReadInt8(pbuf);
 			count = BufferIO::ReadInt8(pbuf);
 			pbuf += count * 8;
 			NetServer::SendBufferToPlayer(players[0], STOC_GAME_MSG, offset, pbuf - offset);
@@ -1409,7 +1407,9 @@ int SingleDuel::Analyze(unsigned char* msgbuffer, unsigned int len) {
 	return 0;
 }
 void SingleDuel::GetResponse(DuelPlayer* dp, void* pdata, unsigned int len) {
-	byte resb[64];
+	byte resb[SIZE_RETURN_VALUE];
+	if (len > SIZE_RETURN_VALUE)
+		len = SIZE_RETURN_VALUE;
 	memcpy(resb, pdata, len);
 	last_replay.WriteInt8(len);
 	last_replay.WriteData(resb, len);

@@ -65,7 +65,8 @@ struct Config {
 
 struct DuelInfo {
 	bool isStarted{ false };
-	bool isFinished{ false };
+	bool isInDuel{ false };
+	bool isFinished{false};
 	bool isReplay{ false };
 	bool isReplaySkiping{ false };
 	bool isFirst{ false };
@@ -165,7 +166,7 @@ public:
 	void ShowCardInfo(int code, bool resize = false);
 	void ClearCardInfo(int player = 0);
 	void AddLog(const wchar_t* msg, int param = 0);
-	void AddChatMsg(const wchar_t* msg, int player);
+	void AddChatMsg(const wchar_t* msg, int player, bool play_sound = false);
 	void ClearChatMsg();
 	void AddDebugMsg(const char* msgbuf);
 	void ErrorLog(const char* msgbuf);
@@ -173,7 +174,9 @@ public:
 	void ClearTextures();
 	void CloseDuelWindow();
 
-	int LocalPlayer(int player);
+	int LocalPlayer(int player) const;
+	int OppositePlayer(int player);
+	int ChatLocalPlayer(int player);
 	const wchar_t* LocalName(int local_player);
 	bool CheckRegEx(const std::wstring& text, const std::wstring& exp, bool exact = false);
 
@@ -189,6 +192,7 @@ public:
 	}
 
 	void OnResize();
+	void ResizeChatInputWindow();
 	recti Resize(s32 x, s32 y, s32 x2, s32 y2);
 	recti Resize(s32 x, s32 y, s32 x2, s32 y2, s32 dx, s32 dy, s32 dx2, s32 dy2);
 	position2di Resize(s32 x, s32 y);
@@ -813,6 +817,7 @@ extern Game* mainGame;
 #define CHECKBOX_QUICK_ANIMATION	364
 #define CHECKBOX_RDM				365
 #define CHECKBOX_D3D				366
+#define CHECKBOX_DISABLE_CHAT		368
 
 #define COMBOBOX_SORTTYPE			370
 #define COMBOBOX_LIMIT				371
@@ -918,6 +923,11 @@ extern Game* mainGame;
 #define MSG_CREATE_RELATION		122
 #define MSG_RELEASE_RELATION	123
 
+#define AVAIL_OCG					0x1
+#define AVAIL_TCG					0x2
+#define AVAIL_CUSTOM				0x4
+#define AVAIL_SC					0x8
+#define AVAIL_OCGTCG				(AVAIL_OCG|AVAIL_TCG)
 #define CARD_ARTWORK_VERSIONS_OFFSET	10
 #define MAX_LAYER_COUNT	6
 extern bool delay_swap;
