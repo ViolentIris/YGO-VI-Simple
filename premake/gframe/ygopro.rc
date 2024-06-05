@@ -1,8 +1,8 @@
 1 ICON "YGO-VI18.ico"
 
 1 VERSIONINFO
-FILEVERSION 1, 0, 36, 0
-PRODUCTVERSION 1, 0, 36, 0
+FILEVERSION 1, 1, 9, 1
+PRODUCTVERSION 1, 1, 9, 1
 FILEOS 0x4
 FILETYPE 0x1
 
@@ -13,11 +13,11 @@ BLOCK "080404b0"
 BEGIN
 VALUE "FileDescription", "YGO-VI-Simple"
 VALUE "InternalName", "YGO-VI-Simple"
-VALUE "LegalCopyright", "Copyright (C) 2022 Fluorohydride"
+VALUE "LegalCopyright", "Copyright (C) Fluorohydride"
 VALUE "OriginalFilename", "YGO-VI-Simple"
 VALUE "ProductName", "YGO-VI-Simple"
-VALUE "FileVersion", "1.036.0"
-VALUE "ProductVersion", "1.036.0"
+VALUE "FileVersion", "1.1.9.1"
+VALUE "ProductVersion", "1.1.9.1"
 END
 END
 BLOCK "VarFileInfo"
