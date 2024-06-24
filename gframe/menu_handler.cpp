@@ -191,9 +191,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_SERVER_CHOOSE: {
 				mainGame->btn233->setEnabled(true);
 				mainGame->btn23333->setEnabled(true);
+				mainGame->btnJP->setEnabled(true);
+				mainGame->btnSP->setEnabled(true);
 				mainGame->btn7210->setEnabled(true);
 				mainGame->btn222->setEnabled(true);
-				mainGame->btnSP->setEnabled(true);
+				mainGame->btn765->setEnabled(true);
+				mainGame->btnNK->setEnabled(true);
 				mainGame->btnSCExit->setEnabled(true);
 				mainGame->ShowElement(mainGame->wSC);
 				mainGame->PopupElement(mainGame->wSC);
@@ -212,8 +215,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_23333: {
-				wcscpy(mainGame->gameConf.lasthost, L"s1.ygo233.com");
-				wcscpy(mainGame->gameConf.lastport, L"23333");
+				wcscpy(mainGame->gameConf.lasthost, L"mygo.superpre.pro");
+				wcscpy(mainGame->gameConf.lastport, L"888");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
@@ -237,7 +240,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_JP: {
 				wcscpy(mainGame->gameConf.lasthost, L"koishi.momobako.com");
-				wcscpy(mainGame->gameConf.lastport, L"3400");
+				wcscpy(mainGame->gameConf.lastport, L"10000");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
@@ -284,8 +287,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SP: {
-				wcscpy(mainGame->gameConf.lasthost, L"mygo.superpre.pro");
-				wcscpy(mainGame->gameConf.lastport, L"888");
+				wcscpy(mainGame->gameConf.lasthost, L"server.ygoanime.com");
+				wcscpy(mainGame->gameConf.lastport, L"2020");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
