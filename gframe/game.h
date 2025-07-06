@@ -9,7 +9,26 @@
 #include <vector>
 #include <list>
 
+#define DEFAULT_DUEL_RULE 5
 namespace ygo {
+
+template<size_t N>
+bool IsExtension(const wchar_t* filename, const wchar_t(&extension)[N]) {
+	auto flen = std::wcslen(filename);
+	constexpr size_t elen = N - 1;
+	if (!elen || flen < elen)
+		return false;
+	return !mywcsncasecmp(filename + (flen - elen), extension, elen);
+}
+
+template<size_t N>
+bool IsExtension(const char* filename, const char(&extension)[N]) {
+	auto flen = std::strlen(filename);
+	constexpr size_t elen = N - 1;
+	if (!elen || flen < elen)
+		return false;
+	return !mystrncasecmp(filename + (flen - elen), extension, elen);
+}
 
 struct Config {
 	bool use_d3d;
